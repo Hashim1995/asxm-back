@@ -1,4 +1,4 @@
-// src/user/user.entity.ts
+// src/user/entity/user.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
@@ -15,7 +15,7 @@ export class User {
     @Column()
     lastName: string;
 
-    @Column()
+    @Column({ unique: true })
     email: string;
 
     @Column()

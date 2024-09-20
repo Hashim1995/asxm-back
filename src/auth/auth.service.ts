@@ -1,5 +1,5 @@
 // src/auth/auth.service.ts
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
@@ -30,13 +30,18 @@ export class AuthService {
         await this.userService.updateUser(userId, { password: hashedPassword });
     }
 
-
     async signIn(signInDto: SignInDto): Promise<{ access_token: string }> {
         const { username, password } = signInDto;
         const user = await this.userService.findByUsername(username);
 
-        if (!user || !(await bcrypt.compare(password, user.password))) {
-            throw new UnauthorizedException('Invalid credentials');
+        if (!user) {
+            throw new BadRequestException('Invalid credentials');
+        }
+
+        // Compare the provided password with the hashed password
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            throw new BadRequestException('Invalid credentials');
         }
 
         // Create the payload for the JWT

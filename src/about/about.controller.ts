@@ -2,13 +2,16 @@ import { Controller, Get, Post, Body, Param, Delete, Put, Query, UseGuards } fro
 import { AboutService } from './about.service';
 import { About } from './entities/about.entity';
 // import { ICommonResponse } from 'src/common/types';
-import { ApiQuery } from '@nestjs/swagger';
+// import { ApiQuery } from '@nestjs/swagger';
 import { CreateAboutDto } from './dto/create-about.dto';
 import { UpdateAboutDto } from './dto/update-about.dto';
+import { ApiTags } from '@nestjs/swagger';
 // import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 // import { Public } from 'src/decorators/public.decorator';
 // import { IAboutBase } from './IAboutBase';
 
+
+@ApiTags('About')
 @Controller('about')
 export class AboutController {
     constructor(private readonly aboutService: AboutService) { }
